@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soecode.blog.dao.mapper.ArticleMapper">
+  <resultMap id="BaseResultMap" type="com.soecode.blog.entity.Article">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="article_title" jdbcType="VARCHAR" property="articleTitle" />
+    <result column="article_image" jdbcType="VARCHAR" property="articleImage" />
+    <result column="article_author" jdbcType="VARCHAR" property="articleAuthor" />
+    <result column="article_classify" jdbcType="INTEGER" property="articleClassify" />
+    <result column="article_read_num" jdbcType="INTEGER" property="articleReadNum" />
+    <result column="article_like_num" jdbcType="INTEGER" property="articleLikeNum" />
+    <result column="article_status" jdbcType="INTEGER" property="articleStatus" />
+    <result column="article_public_time" jdbcType="TIMESTAMP" property="articlePublicTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="kind_name" jdbcType="VARCHAR" property="kindName" />
+
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.soecode.blog.entity.Article">
+    <result column="article_content" jdbcType="LONGVARCHAR" property="articleContent" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, article_title, article_image, article_author, article_classify, article_read_num, 
+    article_like_num, article_status, article_public_time, create_time, update_time
+  </sql>
+  <sql id="Blob_Column_List">
+    article_content
+  </sql>
+  <select id="articleList" parameterType="com.soecode.blog.entity.Article" resultMap="ResultMapWithBLOBs">
+    select
+     a.id, a.article_title,a.article_image,a.article_author,a.article_classify,a.article_read_num
+    ,
+      a.article_content,a.article_like_num,a.article_status,a.article_public_time,a.update_time
+    ,
+     kind.kind_name
+    from article a  inner join kind   on a.article_classify = kind.id
+      <if  test="articleClassify != null">
+          where article_classify =#{articleClassify}
+      </if>
+    order by update_time desc limit #{start}, #{pagesize}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from article
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="addArticle" parameterType="com.soecode.blog.entity.Article">
+    insert into article ( article_title, article_image,
+      article_author, article_classify, article_read_num, 
+      article_like_num,
+       article_content,article_public_time,create_time
+
+      )
+    values ( #{articleTitle,jdbcType=VARCHAR}, #{articleImage,jdbcType=VARCHAR},
+      #{articleAuthor,jdbcType=VARCHAR}, #{articleClassify,jdbcType=INTEGER}, #{articleReadNum,jdbcType=INTEGER}, 
+      #{articleLikeNum,jdbcType=INTEGER}, #{articleContent,jdbcType=LONGVARCHAR},#{publichTime},#{createTime}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.soecode.blog.entity.Article">
+    insert into article
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="articleTitle != null">
+        article_title,
+      </if>
+      <if test="articleImage != null">
+        article_image,
+      </if>
+      <if test="articleAuthor != null">
+        article_author,
+      </if>
+      <if test="articleClassify != null">
+        article_classify,
+      </if>
+      <if test="articleReadNum != null">
+        article_read_num,
+      </if>
+      <if test="articleLikeNum != null">
+        article_like_num,
+      </if>
+      <if test="articleStatus != null">
+        article_status,
+      </if>
+      <if test="articlePublicTime != null">
+        article_public_time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="articleContent != null">
+        article_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="articleTitle != null">
+        #{articleTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="articleImage != null">
+        #{articleImage,jdbcType=VARCHAR},
+      </if>
+      <if test="articleAuthor != null">
+        #{articleAuthor,jdbcType=VARCHAR},
+      </if>
+      <if test="articleClassify != null">
+        #{articleClassify,jdbcType=INTEGER},
+      </if>
+      <if test="articleReadNum != null">
+        #{articleReadNum,jdbcType=INTEGER},
+      </if>
+      <if test="articleLikeNum != null">
+        #{articleLikeNum,jdbcType=INTEGER},
+      </if>
+      <if test="articleStatus != null">
+        #{articleStatus,jdbcType=INTEGER},
+      </if>
+      <if test="articlePublicTime != null">
+        #{articlePublicTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="articleContent != null">
+        #{articleContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateArticle" parameterType="com.soecode.blog.entity.Article">
+    update article
+    <set>
+      <if test="articleTitle != '' ">
+        article_title = #{articleTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="articleImage != '' ">
+        article_image = #{articleImage,jdbcType=VARCHAR},
+      </if>
+      <if test="articleAuthor != '' ">
+        article_author = #{articleAuthor,jdbcType=VARCHAR},
+      </if>
+      <if test="articleClassify != null">
+        article_classify = #{articleClassify,jdbcType=INTEGER},
+      </if>
+      <if test="articleReadNum != null">
+        article_read_num = #{articleReadNum,jdbcType=INTEGER},
+      </if>
+      <if test="articleLikeNum != null">
+        article_like_num = #{articleLikeNum,jdbcType=INTEGER},
+      </if>
+      <!--<if test="articleStatus != null">-->
+        <!--article_status = #{articleStatus,jdbcType=INTEGER},-->
+      <!--</if>-->
+      <!--<if test="articlePublicTime != null">-->
+        <!--article_public_time = #{articlePublicTime,jdbcType=TIMESTAMP},-->
+      <!--</if>-->
+      <!--<if test="createTime != null">-->
+        <!--create_time = #{createTime,jdbcType=TIMESTAMP},-->
+      <!--</if>-->
+      <!--<if test="updateTime != null">-->
+        <!--update_time = #{updateTime,jdbcType=TIMESTAMP},-->
+      <!--</if>-->
+      <if test="articleContent != '' ">
+        article_content = #{articleContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateArticle1" parameterType="com.soecode.blog.entity.Article">
+    update article
+    set article_title = #{articleTitle,jdbcType=VARCHAR},
+      article_image = #{articleImage,jdbcType=VARCHAR},
+      article_author = #{articleAuthor,jdbcType=VARCHAR},
+      article_classify = #{articleClassify,jdbcType=INTEGER},
+      article_read_num = #{articleReadNum,jdbcType=INTEGER},
+      article_like_num = #{articleLikeNum,jdbcType=INTEGER},
+      article_content = #{articleContent,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.soecode.blog.entity.Article">
+    update article
+    set article_title = #{articleTitle,jdbcType=VARCHAR},
+      article_image = #{articleImage,jdbcType=VARCHAR},
+      article_author = #{articleAuthor,jdbcType=VARCHAR},
+      article_classify = #{articleClassify,jdbcType=INTEGER},
+      article_read_num = #{articleReadNum,jdbcType=INTEGER},
+      article_like_num = #{articleLikeNum,jdbcType=INTEGER},
+      article_content = #{articleContent,jdbcType=LONGVARCHAR}
+--       article_status = #{articleStatus,jdbcType=INTEGER},
+--       article_public_time = #{articlePublicTime,jdbcType=TIMESTAMP},
+--       create_time = #{createTime,jdbcType=TIMESTAMP},
+--       update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="totalCount"  resultType="Integer">
+    select  count(1)
+    from article
+      <if  test="articleClassify != null">
+      where article_classify =#{articleClassify}
+  </if>
+  </select>
+</mapper>

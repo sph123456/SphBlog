@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soecode.blog.dao.mapper.KindMapper">
+  <resultMap id="BaseResultMap" type="com.soecode.blog.entity.Kind">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="kind_name" jdbcType="VARCHAR" property="kindName" />
+
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, kind_name,  update_time
+  </sql>
+  <select id="kindList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from kind
+    order by update_time desc limit #{start}, #{pagesize}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from kind
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="addKind" parameterType="com.soecode.blog.entity.Kind">
+    insert into kind ( kind_name)
+    values ( #{kindName,jdbcType=VARCHAR})
+  </insert>
+
+  <update id="updateKind" parameterType="com.soecode.blog.entity.Kind">
+    update kind
+    set kind_name = #{kindName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="totalCount" resultType="Integer">
+     select  count(1)
+    from kind
+  </select>
+</mapper>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.soecode.blog.dao.mapper.ImageMapper">
+    <resultMap id="BaseResultMap" type="com.soecode.blog.entity.Image">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
+        <result column="image_title" jdbcType="VARCHAR" property="imageTitle" />
+        <result column="image_kind" jdbcType="INTEGER" property="imageKind" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="kind_name" jdbcType="VARCHAR" property="kindName" />
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, image_url, image_title, image_kind, create_time, update_time
+  </sql>
+    <select id="imageList" parameterType="com.soecode.blog.entity.Image" resultMap="BaseResultMap">
+    select
+   a.id, a.image_url, a.image_title,a.image_kind, a.create_time,a.update_time,
+   kind.kind_name
+    from image a left  join  kind  on a.image_kind = kind.id
+     where  1=1
+        <if test="imageKind != null">
+            and   a.image_kind = #{imageKind}
+        </if>
+    order by update_time desc limit #{start}, #{pageSize}
+  </select>
+    <delete id="deleteImage" parameterType="java.lang.Integer">
+    delete from image
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="addImage" parameterType="com.soecode.blog.entity.Image">
+    insert into image ( image_url, image_title,
+      image_kind, create_time
+      )
+    values (  #{imageUrl,jdbcType=VARCHAR}, #{imageTitle,jdbcType=VARCHAR},
+      #{imageKind,jdbcType=INTEGER},#{ createTime}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.soecode.blog.entity.Image">
+        insert into image
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="imageUrl != null">
+                image_url,
+            </if>
+            <if test="imageTitle != null">
+                image_title,
+            </if>
+            <if test="imageKind != null">
+                image_kind,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="imageUrl != null">
+                #{imageUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="imageTitle != null">
+                #{imageTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="imageKind != null">
+                #{imageKind,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateImage" parameterType="com.soecode.blog.entity.Image">
+        update image
+        <set>
+            <if test="imageUrl != ''">
+                image_url = #{imageUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="imageTitle != '' ">
+                image_title = #{imageTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="imageKind != null">
+                image_kind = #{imageKind,jdbcType=INTEGER},
+            </if>
+            <!--<if test="createTime != null">-->
+            <!--create_time = #{createTime,jdbcType=TIMESTAMP},-->
+            <!--</if>-->
+            <!--<if test="updateTime != null">-->
+            <!--update_time = #{updateTime,jdbcType=TIMESTAMP},-->
+            <!--</if>-->
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <select id="select" resultType="Integer">
+    select  count(1) from image where  image_title=#{imageTitle}
+  </select>
+    <select id="totalCount" resultType="Integer">
+    select  count(1) from image
+  </select>
+</mapper>
