@@ -6,7 +6,6 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -70,7 +69,20 @@ public class RedisDao {
         }
         return (String) result;
     }
-
+    public  String setMap (String key ,Map<String,String> map){
+        Object result ;
+        Jedis jedis =jedisPool.getResource();
+        result = jedis.hmset(key,map);
+        jedis.close();
+        return (String) result;
+    }
+    public  Map<String, String> hgetAll(String  key ){
+        Object result ;
+        Jedis jedis =jedisPool.getResource();
+        result = jedis.hgetAll(key);
+        jedis.close();
+        return (Map<String, String>) result;
+    }
 
     public String hget( String key,String field) {
         Object result ;
@@ -199,4 +211,7 @@ public class RedisDao {
 //        Jedis jedis = jedisPool.getResource();
 //        jedis.hgetAll()
     }
+
+//    public void hmset(String key, String token) {
+//    }
 }

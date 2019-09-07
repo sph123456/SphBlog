@@ -35,6 +35,10 @@ public interface ArticleMapper {
     int updateArticle(@Param(value = "articleTitle") String articleTitle,@Param(value = "articleImage") String articleImage,
                       @Param(value = "articleAuthor") String articleAuthor, @Param(value = "articleClassify") Integer articleClassify,@Param(value = "articleReadNum") Integer articleReadNum,
                       @Param(value = "articleLikeNum")Integer articleLikeNum,  @Param(value = "articleContent") String articleContent ,@Param(value = "id") Integer id);
+
+    int updateStatus(@Param(value = "id") String id, @Param(value = "articleStatus") Integer articleStatus);
+
+    int[] updateStatus(List<Object[]> list);
 //
 //    int updateArticle(@Param(value = "id") Integer id, @Param(value = "articleTitle") String articleTitle, @Param(value = "articleImage") String articleImage,
 //                      @Param(value = "articleAuthor") String articleAuthor, Integer classify, @Param(value = "articleClassify") Integer articleClassify,

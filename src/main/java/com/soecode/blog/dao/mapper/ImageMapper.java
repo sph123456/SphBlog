@@ -21,7 +21,7 @@ public interface ImageMapper {
 
     List<Image> imageList(@Param(value = "pageSize") Integer pageSize, @Param(value = "start") Integer start, @Param(value = "currentPage") Integer currentPage,@Param(value = "imageKind") Integer imageKind);
 
-    Integer totalCount();
+    Integer totalCount(@Param(value = "imageKind")Integer imageKind);
 
     int select(@Param(value = "imageTitle") String imageTitle);
 

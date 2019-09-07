@@ -21,7 +21,7 @@ public class KindController {
 
 
     /**
-     * 获取用户列表进行分页
+     * 获取类别列表进行分页
      * @param pagesize   限制条数
      * @param currentPage 当前页
      * @return

@@ -47,5 +47,5 @@
 		<!-- 给出需要扫描Dao接口包 -->
 		<property name="basePackage" value="com.soecode.blog.dao.mapper" />
 	</bean>
-    <import resource="classpath:spring/spring-redis.xml" />
+    <!--<import resource="classpath:spring/spring-redis.xml" />-->
 </beans>

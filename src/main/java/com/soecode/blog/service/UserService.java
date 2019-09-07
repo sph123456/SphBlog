@@ -1,15 +1,26 @@
 package com.soecode.blog.service;
 
+import com.nimbusds.jose.JOSEException;
+import com.soecode.blog.Untils.TokenUtil;
 import com.soecode.blog.dao.mapper.UserMapper;
+import com.soecode.blog.dao.redis.RedisDao;
 import com.soecode.blog.entity.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserService  {
+    public static Object redisUser ;
     @Resource
      private UserMapper userMapper;
+
+    @Autowired
+    private RedisDao redisDao;
     public int register(String phone, String password, String nickname, String email) {
         int result = userMapper.insert(phone,password,nickname,email);
         return  result;
@@ -45,7 +56,64 @@ public class UserService  {
         return  result;
     }
 
-    public int checklogin(String phone, String password) {
-        return this.userMapper.checklogin(phone,password);
+    public Integer checklogin(String phone, String password) {
+        Integer result = this.userMapper.checklogin(phone,password);
+        String token = null;
+        if(result > 0 ){
+            User user = userMapper.userInfo(phone,password);
+            String userInfor= user.getId().toString()+user.getNickname();
+            Map<String, Object> map = new HashMap<>();
+            //建立载荷。
+            map.put("userInfor", userInfor);
+            //生成时间
+            map.put("sta", new Date().getTime());
+            //过期时间
+            map.put("exp", new Date().getTime()+600);
+            try {
+                 token = TokenUtil.creatToken(map);
+                 String key = token;
+                 if(redisDao.existKey(key)){
+                     redisUser =redisDao.hgetAll(key);
+                 }else {
+                     Map <String,String> hmap = new HashMap<String,String>();
+                     hmap.put("userID",user.getId().toString());
+                     hmap.put("nickName",user.getNickname());
+                     redisDao.setMap(key,hmap);
+                 }
+            } catch (JOSEException e) {
+                e.printStackTrace();
+            }
+        }
+            return  result;
+
+//        System.out.println(token);
+//        return result;
     }
+
+//    public static void main(String[] args) {
+//
+//
+//        Map<String, Object> map = new HashMap<>();
+//
+//        String userInfor = "1唯美";
+//        //建立载荷，这些数据根据业务，自己定义。
+//        map.put("uid", userInfor);
+//        //生成时间
+//        map.put("sta", new Date().getTime());
+//        //过期时间
+//        map.put("exp", new Date().getTime()+400);
+//        try {
+//            String token = TokenUtil.creatToken(map);
+//            TokenUtil.ValidToken(token);
+//            System.out.println("token:"+token);
+////            System.out.println();
+//
+//        } catch (JOSEException e) {
+//            System.out.println("生成token失败");
+//            e.printStackTrace();
+//        }
+
+
+
+
 }

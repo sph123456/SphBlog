@@ -134,7 +134,14 @@
   </update>
 <select id="checklogin"  resultType="Integer">
     select  count(1)
+    from user where phone=#{phone} and password = #{password}
+  </select>
+<select id="Count"  resultType="Integer">
+    select  count(1)
     from user where phone=#{phone}
   </select>
-
+    <select id="userInfo"  parameterType="com.soecode.blog.entity.User" resultMap="BaseResultMap">
+        select  <include refid="Base_Column_List" />
+        from user where phone= #{phone} and password = #{password} order by create_time desc
+    </select>
 </mapper>

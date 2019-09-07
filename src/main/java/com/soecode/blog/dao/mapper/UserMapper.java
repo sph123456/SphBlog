@@ -18,7 +18,9 @@ public interface UserMapper {
 
     int ifEnable(@Param(value = "isDelete") Integer isDelete,@Param(value = "phone") String phone);
 
-    int Count(String phone);
+    int Count(@Param(value = "phone") String phone);
 
     int checklogin(@Param(value = "phone") String phone,@Param(value = "password") String password);
+
+    User userInfo(@Param(value = "phone") String phone,@Param(value = "password") String password);
 }

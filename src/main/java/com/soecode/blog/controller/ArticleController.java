@@ -23,7 +23,7 @@ public class ArticleController {
         private ArticleService articleService;
 
     /**
-     * 获取用户列表进行分页
+     * 获取文章列表进行分页
      * @param pagesize   限制条数
      * @param currentPage 当前页
      * @return
@@ -125,7 +125,6 @@ public class ArticleController {
      * @return
      */
     @RequestMapping(value = "/delete",produces = "application/json;charset=utf-8")
-    @ResponseBody()
     public String delete(  Integer id) {
         if (id == null) {
             return BaseResponseUtil.getBaseRespToString(-1, "参数错误", "erro");
@@ -137,4 +136,19 @@ public class ArticleController {
             return BaseResponseUtil.getBaseRespToString(1, "Success", null);
         }
     }
+
+
+    @RequestMapping(value = "/updateStatus")
+    public Object updateStatus(String id, Integer articleStatus){
+        if(id == null || articleStatus == null){
+            return BaseResponseUtil.getBaseRespToString(-1,"参数错误","erro");
+        }
+        int result = articleService.updateStatus(id,articleStatus);
+        if(result >0){
+            return  BaseResponseUtil.getBaseRespToString(1,"修改成功","success");
+        }else {
+            return  BaseResponseUtil.getBaseRespToString(-2,"修改失败","erro");
+        }
+    }
+
 }

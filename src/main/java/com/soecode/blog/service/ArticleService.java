@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -54,5 +55,28 @@ public class ArticleService {
         Date publicTime = new Date();
         Date createTime = new Date();
         return this.articleMapper.addArticle(articleTitle,articleImage,articleAuthor,articleClassify,articleReadNum,articleLikeNum,articleContent,publicTime,createTime);
+    }
+
+    /**
+     * 批量修改文章状态
+     * @param id
+     * @param articleStatus
+     * @return
+     */
+    public int updateStatus(String id, Integer articleStatus) {
+        String[] ids = id.split(",");
+        List<Object[]> list = new ArrayList<Object[]>();
+        if(ids != null && ids.length>0){
+            for(int i=0;i<ids.length;i++){
+                list.add(new Object[]{articleStatus,ids[i],ids[i]});
+            }
+            int[] result = articleMapper.updateStatus(list);
+            if(result.length == 0){
+                return -1;
+            }
+            return 1;
+        }
+        return -1;
+
     }
 }

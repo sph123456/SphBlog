@@ -43,17 +43,14 @@ public class UserController {
         if ( StringUtils.isNullOrEmpty(phone) || password == null) {
            return BaseResponseUtil.getBaseRespToString(-1,"参数错误","erro");
         }
-        if(!phone.matches(regex)){
+        if(phone.matches(regex)){
             return BaseResponseUtil.getBaseRespToString(-2,"手机号码格式不对","erro");
         }
+            Integer result = userService.checklogin(phone,password);
 
-        int count = userService.Count(phone);
-        if(count>0) {
-            return BaseResponseUtil.getBaseRespToString(-3,"该手机号已经注册","erro");
-        }else {
-            int result = userService.checklogin(phone,password);
-            if(result > 0) {
-                return BaseResponseUtil.getBaseRespToString(0,"登录成功",null);
+            if(result >0 ) {
+//                String token = userService.checklogin(phone,password);
+                return BaseResponseUtil.getBaseRespToString(0,"登录成功",UserService.redisUser);
             }else {
                 return BaseResponseUtil.getBaseRespToString(-1,"该手机号尚未注册或者密码错误",null);
             }
@@ -64,7 +61,6 @@ public class UserController {
 //            return BaseResponseUtil.getBaseRespToString(-1,"该手机号尚未注册或者密码错误",null);
 //        }
 
-    }
 
     /**
      * 注册
@@ -90,11 +86,16 @@ public class UserController {
         if(password.length()<6 || password.length()>16){
             return  BaseResponseUtil.getBaseRespToString(-4,"密码长度不对","erro");
         }
-        int ret = userService.register(phone,password,nickname,email);
-        if(ret > 0){
-            return BaseResponseUtil.getBaseRespToString(0,"注册成功","ok");
+        int count = userService.Count(phone);
+        if(count>0) {
+            return BaseResponseUtil.getBaseRespToString(-3,"该手机号已经注册","erro");
+        }else {
+            int ret = userService.register(phone, password, nickname, email);
+            if (ret > 0) {
+                return BaseResponseUtil.getBaseRespToString(0, "注册成功", "ok");
+            }
+            return BaseResponseUtil.getBaseRespToString(0, "注册成功", "ok");
         }
-        return BaseResponseUtil.getBaseRespToString(0,"注册成功","ok");
     }
 
     /**
@@ -111,7 +112,7 @@ public class UserController {
         }
         int result = userService.updateAdmin(id,isAdmin);
         if(result == 1){
-            return BaseResponseUtil.getBaseRespToString(-1,"修改成功",null);
+            return BaseResponseUtil.getBaseRespToString(0,"修改成功",null);
         }
         return BaseResponseUtil.getBaseRespToString(-2,"修改失败",null);
     }

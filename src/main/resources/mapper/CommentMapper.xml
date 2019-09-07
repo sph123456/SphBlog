@@ -27,15 +27,13 @@
     delete from comment
     where id = #{id,jdbcType=VARCHAR}
   </delete>
-  <insert id="insert" parameterType="com.soecode.blog.entity.Comment">
-    insert into comment (id, target_id, pid, 
+  <insert id="addComment" parameterType="com.soecode.blog.entity.Comment">
+    insert into comment ( target_id, pid,
       content, user_id, user_nickname, 
-      reply_userid, reply_id, status, 
-      create_time)
-    values (#{id,jdbcType=VARCHAR}, #{targetId,jdbcType=VARCHAR}, #{pid,jdbcType=VARCHAR}, 
+      reply_userid, reply_id, status,)
+    values ( #{targetId,jdbcType=VARCHAR}, #{pid,jdbcType=VARCHAR},
       #{content,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{userNickname,jdbcType=VARCHAR}, 
-      #{replyUserid,jdbcType=VARCHAR}, #{replyId,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
-      #{createTime,jdbcType=TIMESTAMP})
+      #{replyUserid,jdbcType=VARCHAR}, #{replyId,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.soecode.blog.entity.Comment">
     insert into comment

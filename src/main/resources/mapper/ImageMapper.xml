@@ -18,9 +18,9 @@
    a.id, a.image_url, a.image_title,a.image_kind, a.create_time,a.update_time,
    kind.kind_name
     from image a left  join  kind  on a.image_kind = kind.id
-     where  1=1
+
         <if test="imageKind != null">
-            and   a.image_kind = #{imageKind}
+            where  image_kind = #{imageKind}
         </if>
     order by update_time desc limit #{start}, #{pageSize}
   </select>
@@ -104,6 +104,6 @@
     select  count(1) from image where  image_title=#{imageTitle}
   </select>
     <select id="totalCount" resultType="Integer">
-    select  count(1) from image
+    select  count(1) from image where image_kind = #{imageKind}
   </select>
 </mapper>
