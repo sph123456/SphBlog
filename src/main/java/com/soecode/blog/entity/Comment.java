@@ -19,7 +19,11 @@ public class Comment {
 
     private String replyUserid;
 
+    private String replyUsername;
+
     private String replyId;
+
+    private Integer type;// 0：对文章的评论；1：回复的评论
 
     private Integer status;
 
@@ -82,6 +86,14 @@ public class Comment {
         this.replyUserid = replyUserid == null ? null : replyUserid.trim();
     }
 
+    public String getReplyUsername() {
+        return replyUsername;
+    }
+
+    public void setReplyUsername(String replyUsername) {
+        this.replyUsername = replyUsername;
+    }
+
     public String getReplyId() {
         return replyId;
     }
@@ -96,6 +108,14 @@ public class Comment {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
     }
 
     public Date getCreateTime() {

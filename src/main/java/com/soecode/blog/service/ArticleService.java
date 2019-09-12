@@ -2,6 +2,7 @@ package com.soecode.blog.service;
 
 import com.soecode.blog.Untils.JSONUtil;
 import com.soecode.blog.dao.mapper.ArticleMapper;
+import com.soecode.blog.dao.mapper.ThumbsMapper;
 import com.soecode.blog.entity.Article;
 import com.soecode.blog.dao.redis.RedisDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +13,19 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ArticleService {
 
     @Autowired
     private ArticleMapper articleMapper;
+    @Autowired
+    private ThumbsMapper thumbsMapper;
     @Resource
     private RedisDao redisDao;
+
+
 
     public List<Article> articleList(Integer pagesize, Integer currentPage,Integer articleClassify) {
         Integer start = (currentPage-1)*pagesize;
@@ -78,5 +84,15 @@ public class ArticleService {
         }
         return -1;
 
+    }
+
+    public void changArticleLikeCount(Map<String,Object> map) {
+        articleMapper.changArticleLikeCount(map);
+
+    }
+
+    public Article select(String targetId) {
+
+        return this.articleMapper.select(targetId);
     }
 }

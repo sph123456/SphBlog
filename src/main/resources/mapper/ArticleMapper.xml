@@ -199,11 +199,15 @@
 --       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="totalCount"  resultType="Integer">
-    select  count(1)
-    from article
-      <if  test="articleClassify != null">
-      where article_classify =#{articleClassify}
-  </if>
-  </select>
+    <update id="changArticleLikeCount"  parameterType="com.soecode.blog.entity.Article">
+        update  article set  article_like_num = #{articleLikeCount} where  id = #{targetId}
+    </update>
+    <select id="select"  parameterType="com.soecode.blog.entity.Article" resultMap="ResultMapWithBLOBs" >
+        select  id, article_title, article_image, article_author, article_classify, article_read_num,
+    article_like_num, article_status, article_public_time, create_time, update_time from  article
+        where  id = #{targetId}
+    </select>
+    <select id="status" resultType="Integer">
+        select article_status from article where id = #{targetId}
+    </select>
 </mapper>

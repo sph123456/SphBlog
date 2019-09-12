@@ -9,32 +9,53 @@
     <result column="user_id" jdbcType="VARCHAR" property="userId" />
     <result column="user_nickname" jdbcType="VARCHAR" property="userNickname" />
     <result column="reply_userid" jdbcType="VARCHAR" property="replyUserid" />
+    <result column="reply_username" jdbcType="VARCHAR" property="replyUsername"/>
     <result column="reply_id" jdbcType="VARCHAR" property="replyId" />
     <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="type" jdbcType="INTEGER" property="type"/>
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, target_id, pid, content, user_id, user_nickname, reply_userid, reply_id, status, 
+    id, target_id, pid, content, user_id, user_nickname, reply_userid, reply_username, reply_id, status,
     create_time
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="commentList"  resultMap="BaseResultMap">
     select 
-    <include refid="Base_Column_List" />
+     id, target_id, pid, content, user_id, user_nickname, reply_userid, reply_username, reply_id, status,
+    create_time
     from comment
-    where id = #{id,jdbcType=VARCHAR}
+    order by create_time desc limit #{start}, #{pagesize}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from comment
-    where id = #{id,jdbcType=VARCHAR}
+      where 1=1
+    <if test="commentId !=null">
+        and id = #{commentId}
+    </if>
+    <if test="targetId !=null ">
+    and target_id = #{targetId}
+    </if>
+    <if test="userId !=null">
+          and user_id= #{userId}
+    </if>
+
   </delete>
   <insert id="addComment" parameterType="com.soecode.blog.entity.Comment">
     insert into comment ( target_id, pid,
       content, user_id, user_nickname, 
-      reply_userid, reply_id, status,)
+      reply_userid,reply_username, reply_id, status,reply_username)
     values ( #{targetId,jdbcType=VARCHAR}, #{pid,jdbcType=VARCHAR},
       #{content,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{userNickname,jdbcType=VARCHAR}, 
-      #{replyUserid,jdbcType=VARCHAR}, #{replyId,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER})
+      #{replyUserid,jdbcType=VARCHAR},#{replyUsername,jdbcType=VARCHAR}, #{replyId,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER})
   </insert>
+    <insert id="replay" parameterType="com.soecode.blog.entity.Comment">
+      insert into comment ( target_id, pid,
+      content, user_id, user_nickname,
+      reply_userid, reply_username, reply_id, status,type)
+    values ( #{targetId,jdbcType=VARCHAR}, #{pid,jdbcType=VARCHAR},
+      #{content,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{userNickname,jdbcType=VARCHAR},
+      #{replyUserid,jdbcType=VARCHAR}, #{replyUsername,jdbcType=VARCHAR} ,#{replyId,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{type })
+    </insert>
   <insert id="insertSelective" parameterType="com.soecode.blog.entity.Comment">
     insert into comment
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -148,4 +169,14 @@
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+    <select id="totalCount"  resultType="Integer">
+        select  count(1)
+        from comment
+        <!--<if  test="articleClassify != null">-->
+            <!--where article_classify =#{articleClassify}-->
+        <!--</if>-->
+    </select>
+    <!--<delete id="delete" parameterType="java.lang.Integer">-->
+        <!--delete from  -->
+    <!--</delete>-->
 </mapper>

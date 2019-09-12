@@ -1,11 +1,11 @@
 package com.soecode.blog.dao.mapper;
 
-import com.soecode.blog.entity.AddParams;
 import com.soecode.blog.entity.Article;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public interface ArticleMapper {
     int deleteByPrimaryKey(@Param(value = "id")Integer id);
@@ -39,6 +39,12 @@ public interface ArticleMapper {
     int updateStatus(@Param(value = "id") String id, @Param(value = "articleStatus") Integer articleStatus);
 
     int[] updateStatus(List<Object[]> list);
+
+    void changArticleLikeCount(Map<String,Object> map);
+
+    Article select(@Param(value = "targetId") String targetId);
+
+    int status(@Param(value = "targetId") String targetId);
 //
 //    int updateArticle(@Param(value = "id") Integer id, @Param(value = "articleTitle") String articleTitle, @Param(value = "articleImage") String articleImage,
 //                      @Param(value = "articleAuthor") String articleAuthor, Integer classify, @Param(value = "articleClassify") Integer articleClassify,
