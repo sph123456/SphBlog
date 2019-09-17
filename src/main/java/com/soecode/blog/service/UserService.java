@@ -85,35 +85,5 @@ public class UserService  {
             }
         }
             return  result;
-
-//        System.out.println(token);
-//        return result;
     }
-
-//    public static void main(String[] args) {
-//
-//
-//        Map<String, Object> map = new HashMap<>();
-//
-//        String userInfor = "1唯美";
-//        //建立载荷，这些数据根据业务，自己定义。
-//        map.put("uid", userInfor);
-//        //生成时间
-//        map.put("sta", new Date().getTime());
-//        //过期时间
-//        map.put("exp", new Date().getTime()+400);
-//        try {
-//            String token = TokenUtil.creatToken(map);
-//            TokenUtil.ValidToken(token);
-//            System.out.println("token:"+token);
-////            System.out.println();
-//
-//        } catch (JOSEException e) {
-//            System.out.println("生成token失败");
-//            e.printStackTrace();
-//        }
-
-
-
-
 }

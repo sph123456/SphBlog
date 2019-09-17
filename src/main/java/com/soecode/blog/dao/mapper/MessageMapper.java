@@ -1,6 +1,5 @@
 package com.soecode.blog.dao.mapper;
 
-import com.soecode.blog.entity.Image;
 import com.soecode.blog.entity.Message;
 import org.apache.ibatis.annotations.Param;
 
@@ -21,7 +20,7 @@ public interface MessageMapper {
 //
 //    int updateByPrimaryKey(Message record);
 
-    List<Image> MessageList(@Param(value = "replay") Integer replay, @Param(value = "start")int start,@Param(value = "pageSize") Integer pageSize, @Param(value = "currentPage")Integer currentPage);
+    List<Message> MessageList(@Param(value = "replay") Integer replay, @Param(value = "start")int start, @Param(value = "pageSize") Integer pageSize, @Param(value = "currentPage")Integer currentPage);
 
     Integer count(@Param(value = "replay")Integer replay);
 }

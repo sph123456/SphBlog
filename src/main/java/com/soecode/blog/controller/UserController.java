@@ -104,7 +104,7 @@ public class UserController {
      * @param
      * @return
      */
-    @RequestMapping(value = "/updateAdmin" ,produces = "application/json;charset=utf-8")
+    @RequestMapping(value = "/updateAdmin")
     @ResponseBody
     public String updateAdmin(Integer id,Integer isAdmin){
         if(id == null){
@@ -123,7 +123,7 @@ public class UserController {
      * @param currentPage 当前页
      * @return
      */
-    @RequestMapping(value = "accountList",produces = "application/json;charset=utf-8")
+    @RequestMapping(value = "accountList")
     @ResponseBody
     public  String accountList (Integer pagesize, Integer currentPage,String phone){
         if(pagesize == null || currentPage == null){
@@ -144,7 +144,7 @@ public class UserController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/delete",produces = "application/json;charset=utf-8")
+    @RequestMapping(value = "/delete")
     @ResponseBody()
     public String delete(  Integer id){
        if(id == null){
@@ -158,7 +158,7 @@ public class UserController {
        return BaseResponseUtil.getBaseRespToString(1,"Success",null);
     }
 
-    @RequestMapping(value = "ifEnable",produces = "application/json;charset=utf-8")
+    @RequestMapping(value = "ifEnable")
     @ResponseBody
     public String ifEnable(Integer isDelete,String phone){
         if(phone == null || isDelete == null){

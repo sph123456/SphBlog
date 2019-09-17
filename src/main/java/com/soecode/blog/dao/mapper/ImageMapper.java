@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.Date;
 import java.util.List;
 
-public interface ImageMapper {
+public interface ImageMapper { 
     int deleteImage(@Param(value = "id") Integer id);
 
     int insert(Image record);
